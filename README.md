@@ -38,6 +38,17 @@ Optional:
 
 The first authenticated run opens a browser and stores the refresh token in `.secrets/google-token.json` by default.
 
+You can put these in a repo-local `.env` file. Real environment variables still win over `.env`.
+
+Example:
+
+```dotenv
+GOOGLE_OAUTH_CLIENT_SECRET_FILE=/absolute/path/to/client_secret.json
+GOOGLE_CALENDAR_MCP_TOKEN_FILE=.secrets/google-token.json
+GOOGLE_CALENDAR_MCP_DEFAULT_TIMEZONE=Asia/Tokyo
+GOOGLE_MAPS_API_KEY=
+```
+
 ## Run with uv
 
 ```bash
@@ -72,6 +83,8 @@ Use this shape in any MCP client that accepts `command`, `args`, and `env`:
 }
 ```
 
+If `.env` exists in this repository, you can omit most or all of the `env` block above.
+
 ### Codex
 
 ```bash
@@ -81,6 +94,16 @@ codex mcp add google-calendar --env GOOGLE_OAUTH_CLIENT_SECRET_FILE=/absolute/pa
 ### Claude Code / Cursor
 
 Use the generic JSON block above in the client's MCP config.
+
+## Process model
+
+This is already a stdio server. It does not need to run as a long-lived daemon.
+
+- The MCP client launches it on demand with `uv --directory /path/to/repo run google-calendar-mcp`
+- The server handles the stdio session
+- The process exits when the client closes the session
+
+You only need a permanently running process if you choose to wrap it in one yourself, which is not required here.
 
 ## Example agent request
 
@@ -96,4 +119,3 @@ The agent should call `fill_missing_locations_from_title`.
 - Dates like `2026-04-01` are treated as all-day dates.
 - The location enrichment tool only updates events that do not already have a location.
 - Google Maps lookups use the event title as the only search query.
-
