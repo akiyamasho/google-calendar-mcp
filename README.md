@@ -55,6 +55,13 @@ GOOGLE_MAPS_API_KEY=
 uv run google-calendar-mcp
 ```
 
+## Make targets
+
+```bash
+make dep
+make run
+```
+
 ## MCP setup
 
 ### Generic JSON
