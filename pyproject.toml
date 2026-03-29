@@ -1,0 +1,29 @@
+[project]
+name = "google-calendar-mcp"
+version = "0.1.0"
+description = "Minimal Google Calendar MCP server for querying and updating events."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "google-api-python-client>=2.169.0",
+  "google-auth-oauthlib>=1.2.2",
+  "mcp>=1.8.0,<2",
+]
+
+[project.scripts]
+google-calendar-mcp = "google_calendar_mcp.server:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/google_calendar_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
